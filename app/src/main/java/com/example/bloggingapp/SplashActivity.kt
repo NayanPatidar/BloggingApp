@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.bloggingapp.register.WelcomeActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -23,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             delay(4000)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
             finish()
         }
     }
