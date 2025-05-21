@@ -21,7 +21,6 @@ class SplashActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         lifecycleScope.launch {
             delay(4000)
             startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
