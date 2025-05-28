@@ -1,9 +1,8 @@
 package com.example.bloggingapp
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,11 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bloggingapp.Model.BloggingModel
 import com.example.bloggingapp.adaptor.BlogAdaptor
 import com.example.bloggingapp.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var blogAdapter: BlogAdaptor
+    private lateinit var databaseReference : DatabaseReference
+    private val blogItems = mutableListOf<BloggingModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,38 +45,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        val blogList = createSampleData()
-        blogAdapter = BlogAdaptor(blogList)
+        blogAdapter = BlogAdaptor(blogItems)
 
         binding.blogRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = blogAdapter
         }
-    }
 
-    private fun createSampleData(): List<BloggingModel> {
-        return listOf(
-            BloggingModel(
-                heading = "Please Start Writing Better Git Commits",
-                username = "New Blogger",
-                date = "July 29, 2022",
-                post = "I recently read a helpful article on Hashnode by Simon Egersand titled \"Write Git Commit Messages Your Colleagues Will Love,\" and it inspired me to dive a little deeper into understanding what makes a Git commit good or bad.",
-                likeCount = 20
-            ),
-            BloggingModel(
-                heading = "Understanding Android Architecture",
-                username = "Tech Writer",
-                date = "August 15, 2022",
-                post = "Android architecture components help you structure your app in a way that is robust, testable, and maintainable with less boilerplate code.",
-                likeCount = 45
-            ),
-            BloggingModel(
-                heading = "Kotlin Tips and Tricks",
-                username = "Kotlin Expert",
-                date = "September 10, 2022",
-                post = "Here are some advanced Kotlin features that can make your code more concise and readable.",
-                likeCount = 32
-            )
-        )
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (snapshot in snapshot.children) {
+                   val blog = snapshot.getValue(BloggingModel::class.java)
+                    if (blog != null){
+                        blogItems.add(blog)
+                    }
+                }
+                blogAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@MainActivity, "Failed to Add Blogs", Toast.LENGTH_SHORT).show()
+            }
+
+        })
     }
 }
