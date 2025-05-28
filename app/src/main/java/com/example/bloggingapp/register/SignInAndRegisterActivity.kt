@@ -104,7 +104,7 @@ class SignInAndRegisterActivity : AppCompatActivity() {
                                     val userReference = database.getReference("users")
                                     val userId = user.uid
                                     val userData =
-                                        com.example.bloggingapp.Model.UserData(name, email)
+                                        com.example.bloggingapp.Model.UserData(name, email, "")
                                     Log.d("REGISTRATION", "DATA SAVED")
 
                                     userReference.child(userId).setValue(userData)
