@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bloggingapp.Model.BloggingModel
 import com.example.bloggingapp.adaptor.BlogAdaptor
 import com.example.bloggingapp.databinding.ActivityMainBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -76,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Adding database value event listener")
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                blogItems.clear()
                 Log.d(TAG, "Database snapshot received")
                 Log.d(TAG, "Snapshot exists: ${snapshot.exists()}")
                 Log.d(TAG, "Snapshot children count: ${snapshot.childrenCount}")
