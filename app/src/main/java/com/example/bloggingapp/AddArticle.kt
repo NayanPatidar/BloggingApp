@@ -49,6 +49,10 @@ class AddArticle : AppCompatActivity() {
             insets
         }
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         binding.AddBlogButton.setOnClickListener {
             Log.d(TAG, "AddBlogButton clicked")
 
@@ -107,7 +111,7 @@ class AddArticle : AppCompatActivity() {
                                 val key = dbRef.push().key
                                 if (key != null) {
                                     Log.d(TAG, "Database key generated: $key")
-
+                                    blogItem.postId = key
                                     dbRef.child(key).setValue(blogItem).addOnCompleteListener {
                                         if (it.isSuccessful) {
                                             Log.d(TAG, "Blog successfully added to database")

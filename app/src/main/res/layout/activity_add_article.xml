@@ -23,7 +23,7 @@
             app:layout_constraintTop_toBottomOf="@+id/BlogDescription" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/backButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="24dp"
